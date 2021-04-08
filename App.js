@@ -9,67 +9,88 @@ export default class App extends React.Component{
     super(props)
     this.state = {
       username:'',
-      password: ''
+      email: '',
+      password: '',
+      confirmPassword: ''
 
     }
   }
-  validation = () => {
-    const {username, password} = this.state
-    if(username === 'daniel' && password === 'lex'){
-      return <Contact />
+
+  handleChange = ({username,password,email,confirmPassword}) => {
+    this.setState({
+      username,
+      password,
+      email,
+      confirmPassword
+    })
+  }
+  
+ validation = () => {
+    
+    const {username, password,email, confirmPassword} = this.state
+    if(username === 'daniel' && password === 'lex' && email !== '' && confirmPassword === password){
+      Alert.alert('login successful')
     }else{
       return Alert.alert('sorry the login details are incorrect')
     }
     
   }
-  // onPress = () => {
-  //   if(this.state.username && this.state.password !== null){
-  //     return Alert.alert('key pressed')
-  //   }
-  // }
-
+  
   render(){
-    const { username, password } = this.state
+
+    const { username,email, password, confirmPassword } = this.state
     
     return(
         <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
             <View style={styles.loginContainer}>
-                  <Text style={styles.loginText}>Log in</Text>
+                  <Text style={styles.loginText}>Sign up</Text>
             </View>
 
             <View>
                 <TextInput style={styles.input} 
                   placeholder='Username'
-                  placeholderTextColor='aaaaaa'
-                  onChangeText={(username) => {
-                  return this.setState({username})
-                  }}
+                  placeholderTextColor='#aaaaaa'
+                  onChangeText={this.handleChange}
                   value={username}
                  />
                 <TextInput style={styles.input} 
+                  placeholder='email'
+                  placeholderTextColor='#aaaaaa'
+                  keyboardType='email-address'
+                  onChangeText={this.handleChange}
+                  value={email}
+                />
+                <TextInput style={styles.input} 
                   placeholder='Password'
-                  placeholderTextColor='aaaaaa'
+                  placeholderTextColor='#aaaaaa'
                   secureTextEntry={true} 
                   value={password}
-                  onChangeText={(password) => {
-                    console.log(password)
-                    return this.setState({password})
-                  }}
+                  onChangeText={this.onChangeText}
                 />
-                <Text style={styles.forgotPassword}>Forgot password?</Text>
+                {/* <Text style={styles.forgotPassword}>Forgot password?</Text> */}
+                <TextInput style={styles.input} 
+                  placeholder='Confirm Password'
+                  placeholderTextColor='#aaaaaa'
+                  secureTextEntry={true} 
+                  value={confirmPassword}
+                  onChangeText={this.handleChange}
+                />
             </View>
 
 
             <View>
                 <TouchableOpacity  style={styles.buttonContainer}
-                    onPress={() => this.validation() } >
-                    <Text style={styles.buttonText}>Log in</Text>
+                    onPress={this.validation}
+                >
+                    <Text style={styles.buttonText}>Sign up</Text>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.noAccountContainer}>
-                <Text style={styles.noAccountText}>Don't have account?</Text>
-                <Text style={styles.signUpText}>Sign up</Text>
+                <Text style={styles.noAccountText}>You already have account?</Text>
+                <TouchableOpacity  onPress={() => Alert.alert('functionality not enabled')}>
+                    <Text style={styles.signUpText}>Log in</Text>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     )
@@ -100,11 +121,11 @@ const styles = StyleSheet.create({
     height: 50,
     marginTop: 20
   },
-  forgotPassword: {
-    alignSelf: 'flex-end',
-    marginVertical: 5,
-    color: '#0853a8'
-  },
+  // forgotPassword: {
+  //   alignSelf: 'flex-end',
+  //   marginVertical: 5,
+  //   color: '#0853a8'
+  // },
   buttonContainer: {
     height: 50,
     backgroundColor:'#5100ad',
@@ -128,6 +149,8 @@ const styles = StyleSheet.create({
   },
   signUpText: {
     fontSize: 16,
-    color: '#5100ad'
-  }
+    color: '#5100ad',
+    textDecorationLine: 'underline'
+  },
+
 });
